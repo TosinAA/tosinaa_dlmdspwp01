@@ -70,6 +70,52 @@ class pwpOLS:
         return idealfour_df
 
 
+class pwpDeviation(pwpOLS):
+    """
+    This class will hold the common variables that will be used as variables in
+    create the squared_dev method (method to compute sum of squared deviations)
+    and max_dev method (method to compute the max deviation and return a value).
+    """
+    
+    def max_dev(self):
+        """
+        This class will compute the max deviations from the two DataFrame inputs.
+        
+        Argument(s): dfA, dfB
+        
+        Return(s): max_deviation
+        """
+        # Inheriting the two DataFrame inputs from the pwpOLS class.
+        super().__init__(self.dfA, self.dfB)
+        
+        # Removing the x column from the dataset
+        try:
+            if 'x' in self.dfA.columns:
+                self.dfA = self.dfA.drop(['x'], axis=1)
+                
+            if 'x' in self.dfB.columns:
+                self.dfB = self.dfB.drop(['x'], axis=1)
+            else:
+                print("There is no x on this DataFrame")
+                pass
+        except:
+            raise Exception("The inputs must be DataFrames")
+        
+        # Computing the max_dev
+        
+        dict_ = dict()
+        
+        for colA in self.dfA.columns:
+            dict_[colA] = [(np.max(np.absolute(self.dfA[colA] - self.dfB[colB]))) for colB in self.dfB.columns]
+        
+        max_dev_per_col = [['y' + str(val.index(np.max(val))+1), np.max(val)] for val in dict_.values()]
+
+        final_max_dev = [i[1] for i in max_dev_per_col]
+        print("Please select the column number of the ideal function for the max_deviation here ")
+        for i in max_dev_per_col: print(i)
+        print()
+        return np.max(final_max_dev)
+
 
 class pwpTasks():
     """
