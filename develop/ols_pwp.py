@@ -179,3 +179,12 @@ class pwpTasks():
              raise Exception('File not found or encoding error!!!')
 
     def df_toSQL(self, df):
+        """
+        This method will write a DataFrame object to sql file and save in the working directory.
+        Make sure that you specify the directory in the additional argument when using the method.
+
+        Argument(s):    df --> Refers to a DataFrame object.
+                        dir --> "ospath + filename + . + extension"
+        
+        Return(s): None
+        """
