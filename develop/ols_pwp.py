@@ -7,6 +7,68 @@ import matplotlib.pyplot as plt
 import bokeh as bk
 import seaborn as sns
 
+class pwpOLS:   
+    def __init__(self, dfA, dfB):
+        self.dfA = dfA
+        self.dfB = dfB
+        
+    def squared_dev(self):
+               
+        # Removing the x column from the dataset
+        try:
+            if 'x' in self.dfA.columns:
+                self.dfA = self.dfA.drop(['x'], axis=1)
+                
+            if 'x' in self.dfB.columns:
+                self.dfB = self.dfB.drop(['x'], axis=1)
+            else:
+                print("There is no x on this DataFrame")
+                pass
+        except:
+            raise Exception("The inputs must be DataFrames")
+        
+        # Declaring the output containers
+        dict_ = dict()
+        min_ssd = list()
+
+        for colA in self.dfA.columns:
+            dict_[colA] = [(np.sum(np.absolute(self.dfA[colA] - self.dfB[colB])**2)) for colB in self.dfB.columns]
+
+        for key, val in dict_.items():
+            min_ssd.append({key:['y' + str(val.index(np.min(val))+1), np.min(val)]})
+            
+        return min_ssd
+    
+    def idealfour_builder(self):
+        """
+        This program will build the dataset of the four ideal functions.
+        It will take input from dfA and dfB.
+        Then it will compute the four ideal functions from the dfB.
+        And the dataset can then be built.
+
+        Argument(s): dfA, dfB
+
+        Return(s): pandas DataFrame
+        """
+        
+        # Declaring the output containers
+        dict_ = dict()
+        col_names = list()
+        
+
+        for colA in self.dfA.columns:
+            dict_[colA] = [(np.sum(np.absolute(self.dfA[colA] - self.dfB[colB])**2)) for colB in self.dfB.columns]
+
+        for val in dict_.values():
+            col_names.append('y' + str(val.index(np.min(val))+1))
+        
+        idealfour_df = pd.DataFrame()
+        idealfour_df["x"] = self.dfA["x"]
+        for col in col_names:
+            idealfour_df[col] = self.dfB[col]
+            
+        return idealfour_df
+
 
 
 class pwpTasks():
