@@ -1,6 +1,8 @@
 CREATE DATABASE IF NOT EXISTS pwpDatasets;
 
-CREATE TABLE IF NOT EXISTS train(
+USE pwpDatasets;
+
+CREATE OR REPLACE TABLE IF NOT EXISTS train(
 	x float, 
 	y1 float,
 	y2 float,
@@ -9,12 +11,12 @@ CREATE TABLE IF NOT EXISTS train(
 ) ;
 
 CREATE TABLE IF NOT EXISTS test(
-	x float 
+	x float, 
 	y float
 ); 
 
 CREATE TABLE IF NOT EXISTS idealfour(
-	x float 
+	x float,
 	y1 float,
 	y2 float,
 	y3 float,
@@ -22,10 +24,10 @@ CREATE TABLE IF NOT EXISTS idealfour(
 );
 
 
-CREATE TABLE IF NOT EXISTS train(
-	x float 
-	y1 float
-	y2 float
+CREATE TABLE IF NOT EXISTS ideal(
+	x float, 
+	y1 float,
+	y2 float,
 	y3 float,
 	y4 float,
     y5 float,
