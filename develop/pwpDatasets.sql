@@ -2,6 +2,8 @@ CREATE DATABASE IF NOT EXISTS pwpDatasets;
 
 USE pwpDatasets;
 
+-- Creating the table objects to perform csv ingestion using python
+
 CREATE OR REPLACE TABLE IF NOT EXISTS train(
 	x float, 
 	y1 float,
@@ -10,10 +12,12 @@ CREATE OR REPLACE TABLE IF NOT EXISTS train(
 	y4 float
 ) ;
 
+
 CREATE TABLE IF NOT EXISTS test(
 	x float, 
 	y float
 ); 
+
 
 CREATE TABLE IF NOT EXISTS idealfour(
 	x float,
