@@ -119,15 +119,9 @@ class pwpDeviation(pwpOLS):
 
 class pwpTasks():
     """
-    This class will be used for the programming with python
-    course final project at IU International Hoschule.
-    The components based on the UML diagram provided on the project document
-    are methods that can perform the following functions:
-    a.  Load the datasets
-    b.  Write the datasets to sql_file
-    c.  Perform ols and compute the 4 ideal functions
-        and build the dataframe for the 4 ideal functions.
-    d.  Compute the max deviation
+    This class will be used to perform some of the additional task of the 
+    programming with python course final project at IU International Hoschule.
+    It will have the df_loader method that will be used for loading the dataset.
     """
     
     def df_loader(self, filepath, sep=','):
@@ -177,14 +171,3 @@ class pwpTasks():
         
         except:
              raise Exception('File not found or encoding error!!!')
-
-    def df_toSQL(self, df):
-        """
-        This method will write a DataFrame object to sql file and save in the working directory.
-        Make sure that you specify the directory in the additional argument when using the method.
-
-        Argument(s):    df --> Refers to a DataFrame object.
-                        dir --> "ospath + filename + . + extension"
-        
-        Return(s): None
-        """
