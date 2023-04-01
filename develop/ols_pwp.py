@@ -13,26 +13,14 @@ class pwpOLS:
         self.dfB = dfB
         
     def squared_dev(self):
-               
-        # Removing the x column from the dataset
-        try:
-            if 'x' in self.dfA.columns:
-                self.dfA = self.dfA.drop(['x'], axis=1)
-                
-            if 'x' in self.dfB.columns:
-                self.dfB = self.dfB.drop(['x'], axis=1)
-            else:
-                print("There is no x on this DataFrame")
-                pass
-        except:
-            raise Exception("The inputs must be DataFrames")
         
         # Declaring the output containers
         dict_ = dict()
         min_ssd = list()
+        col_names = list()
 
-        for colA in self.dfA.columns:
-            dict_[colA] = [(np.sum(np.absolute(self.dfA[colA] - self.dfB[colB])**2)) for colB in self.dfB.columns]
+        for colA in self.dfA.columns[1:]:
+            dict_[colA] = [(np.sum(np.absolute(self.dfA[colA] - self.dfB[colB])**2)) for colB in self.dfB.columns[1:]]
 
         for key, val in dict_.items():
             min_ssd.append({key:['y' + str(val.index(np.min(val))+1), np.min(val)]})
@@ -55,18 +43,19 @@ class pwpOLS:
         dict_ = dict()
         col_names = list()
         
+        for colA in self.dfA.columns[1:]:
+            dict_[colA] = [(np.sum(np.absolute(self.dfA[colA] - self.dfB[colB])**2)) for colB in self.dfB.columns[1:]]
 
-        for colA in self.dfA.columns:
-            dict_[colA] = [(np.sum(np.absolute(self.dfA[colA] - self.dfB[colB])**2)) for colB in self.dfB.columns]
-
-        for val in dict_.values():
+        #Creating the column names
+        for key, val in dict_.items():
             col_names.append('y' + str(val.index(np.min(val))+1))
         
-        idealfour_df = pd.DataFrame()
-        idealfour_df["x"] = self.dfA["x"]
+        # Creating the dataframe for the idealfour dataset
+        idealfour_df = pd.DataFrame(self.dfB[["x"]])
+        
         for col in col_names:
             idealfour_df[col] = self.dfB[col]
-            
+          
         return idealfour_df
 
 
@@ -138,6 +127,39 @@ class pwpTasks():
         Return(s): The dfname 
         """
         # Defining the variable inputs of the the df_loader
+        self.filepath = filepath
+
+        # List of supported file formats
+        pd_formats = ['.csv', '.txt', '.json', '.html']
+
+        # Extracting the file extension from filepath
+        # It returns the file part (index 0) and file extension (index 1)
+        split_ext = list(os.path.splitext(self.filepath))
+        
+        # Selecting the correct file format that matches the file extension
+        try:
+            if split_ext[1] == pd_formats[0]:
+                dfname = pd.read_csv(self.filepath)
+                return dfname
+        
+            if split_ext[1] == pd_formats[1]:
+                dfname = pd.read_csv(self.filepath)
+                return dfname
+        
+            if split_ext[1] == pd_formats[2]:
+                dfname = pd.read_json(self.filepath)
+                return dfname
+        
+            if split_ext[1] == pd_formats[3]:
+                with open(self.filepath, 'r') as f:
+                    dfname = pd.read_html(f.read())
+                return dfname
+            
+            else:
+                 print('Format Error: Unsupported file format')
+        
+        except:
+             raise Exception('File not found or encoding error!!!')        # Defining the variable inputs of the the df_loader
         self.filepath = str(filepath)
 
         # List of supported file formats
