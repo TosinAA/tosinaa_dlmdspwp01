@@ -66,7 +66,7 @@ class pwpDeviation(pwpOLS):
     and max_dev method (method to compute the max deviation and return a value).
     """
     
-        def max_dev(self):
+    def max_dev(self):
         """
         This class will compute the max deviations from the two DataFrame inputs.
         
@@ -85,6 +85,7 @@ class pwpDeviation(pwpOLS):
         
         for colA in self.dfA.columns[1:]:
             dict_[colA] = [(np.max(np.absolute(self.dfA[colA] - self.dfB[colB]))) for colB in self.dfB.columns[1:]]
+        
         # Building the column names and the max deviation
         dfB_cols = [colB for colB in self.dfB.columns[1:]]
         max_deviation = [[dfB_cols[value.index(np.max(value))], np.max(value)] for key, value in dict_.items()]
