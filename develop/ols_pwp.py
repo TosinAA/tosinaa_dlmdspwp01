@@ -3,17 +3,31 @@
 import os
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-import bokeh as bk
-import seaborn as sns
+
+# Creating the pwpOLS class
 
 class pwpOLS:   
+    """
+    This class contains the squared_dev() and idealfour_builder() methods.
+    Both methods work based on the sum of squared deviation method from the
+    ordinary least squares method.
+    idealfour_builder builds a dataset based on the findings of the squared_dev()
+    and returns a pandas DataFrame.
+    """
+    
     def __init__(self, dfA, dfB):
         self.dfA = dfA
         self.dfB = dfB
         
     def squared_dev(self):
-        
+        """
+        This method computes the sum of squared deviation using the train and ideal
+        datasets as the inputs.
+
+        Argument(s): dfA, dfB
+
+        Returns: list of dictionaries object
+        """
         # Declaring the output containers
         dict_ = dict()
         min_ssd = list()
@@ -31,8 +45,7 @@ class pwpOLS:
         """
         This program will build the dataset of the four ideal functions.
         It will take input from dfA and dfB.
-        Then it will compute the four ideal functions from the dfB.
-        And the dataset can then be built.
+        And use it to build the resulting dataset.
 
         Argument(s): dfA, dfB
 
@@ -61,9 +74,9 @@ class pwpOLS:
 
 class pwpDeviation(pwpOLS):
     """
-    This class will hold the common variables that will be used as variables in
-    create the squared_dev method (method to compute sum of squared deviations)
-    and max_dev method (method to compute the max deviation and return a value).
+    This class is designed to have the max_dev() method used for computing the
+    deviation or errors between two different datasets containing historical data
+    and prediction data. We can call the two datasets dfA and dfB.
     """
     
     def max_dev(self):
@@ -72,7 +85,7 @@ class pwpDeviation(pwpOLS):
         
         Argument(s): dfA, dfB
         
-        Return(s): max_deviation
+        Return(s): max_deviation (list object)
         """
         # Inheriting the two DataFrame inputs from the pwpOLS class.
         super().__init__(self.dfA, self.dfB)
@@ -95,15 +108,15 @@ class pwpDeviation(pwpOLS):
 
 class pwpTasks():
     """
-    This class will be used to perform some of the additional task of the 
-    programming with python course final project at IU International Hoschule.
-    It will have the df_loader method that will be used for loading the dataset.
+    This class contains the df_loader() method for loading different datasets with
+    different extensions. This project will continue to be developed after this project.
+    Support is highly welcome when a separate GitHub project folder is opened for it.
     """
     
     def df_loader(self, filepath, sep=','):
         """
         This method will load any dataset supported by pandas library.
-        Five (5) pandas read_formats are supported.
+        Four (4) pandas read_formats are supported.
         They are '.csv', '.txt', '.json', '.html' formats.
         The delimiter is set to ',' by default, but it can be changed as an
         additional argument incases where the delimiter is a tab "\t", " ", etc.
