@@ -33,13 +33,16 @@ class pwpOLS:
         min_ssd = list()
         col_names = list()
 
-        for colA in self.dfA.columns[1:]:
-            dict_[colA] = [(np.sum(np.absolute(self.dfA[colA] - self.dfB[colB])**2)) for colB in self.dfB.columns[1:]]
+        try:
+            for colA in self.dfA.columns[1:]:
+                dict_[colA] = [(np.sum(np.absolute(self.dfA[colA] - self.dfB[colB])**2)) for colB in self.dfB.columns[1:]]
 
-        for key, val in dict_.items():
-            min_ssd.append({key:['y' + str(val.index(np.min(val))+1), np.min(val)]})
-            
-        return min_ssd
+            for key, val in dict_.items():
+                min_ssd.append({key:['y' + str(val.index(np.min(val))+1), np.min(val)]})
+                
+            return min_ssd
+        except:
+            raise TypeError
     
     def idealfour_builder(self):
         """
@@ -51,25 +54,27 @@ class pwpOLS:
 
         Return(s): pandas DataFrame
         """
-        
-        # Declaring the output containers
-        dict_ = dict()
-        col_names = list()
-        
-        for colA in self.dfA.columns[1:]:
-            dict_[colA] = [(np.sum(np.absolute(self.dfA[colA] - self.dfB[colB])**2)) for colB in self.dfB.columns[1:]]
+        try:
+            # Declaring the output containers
+            dict_ = dict()
+            col_names = list()
+            
+            for colA in self.dfA.columns[1:]:
+                dict_[colA] = [(np.sum(np.absolute(self.dfA[colA] - self.dfB[colB])**2)) for colB in self.dfB.columns[1:]]
 
-        #Creating the column names
-        for key, val in dict_.items():
-            col_names.append('y' + str(val.index(np.min(val))+1))
-        
-        # Creating the dataframe for the idealfour dataset
-        idealfour_df = pd.DataFrame(self.dfB[["x"]])
-        
-        for col in col_names:
-            idealfour_df[col] = self.dfB[col]
-          
-        return idealfour_df
+            #Creating the column names
+            for key, val in dict_.items():
+                col_names.append('y' + str(val.index(np.min(val))+1))
+            
+            # Creating the dataframe for the idealfour dataset
+            idealfour_df = pd.DataFrame(self.dfB[["x"]])
+            
+            for col in col_names:
+                idealfour_df[col] = self.dfB[col]
+            
+            return idealfour_df
+        except:
+            raise TypeError
 
 
 class pwpDeviation(pwpOLS):
@@ -90,21 +95,21 @@ class pwpDeviation(pwpOLS):
         # Inheriting the two DataFrame inputs from the pwpOLS class.
         super().__init__(self.dfA, self.dfB)
         
-        
-        # Computing the max_dev
-        
-        # Collecting the max deviation for each y-df values over the numerous y-dfB values
-        dict_ = dict()
-        
-        for colA in self.dfA.columns[1:]:
-            dict_[colA] = [(np.max(np.absolute(self.dfA[colA] - self.dfB[colB]))) for colB in self.dfB.columns[1:]]
-        
-        # Building the column names and the max deviation
-        dfB_cols = [colB for colB in self.dfB.columns[1:]]
-        max_deviation = [[dfB_cols[value.index(np.max(value))], np.max(value)] for key, value in dict_.items()]
+        try:
+            # Collecting the max deviation for each y-df values over the numerous y-dfB values
+            dict_ = dict()
+            
+            for colA in self.dfA.columns[1:]:
+                dict_[colA] = [(np.max(np.absolute(self.dfA[colA] - self.dfB[colB]))) for colB in self.dfB.columns[1:]]
+            
+            # Building the column names and the max deviation
+            dfB_cols = [colB for colB in self.dfB.columns[1:]]
+            max_deviation = [[dfB_cols[value.index(np.max(value))], np.max(value)] for key, value in dict_.items()]
 
-        return max_deviation
-
+            return max_deviation
+        except:
+            raise TypeError
+            print("You must input pandas DataFrame objects!!!")
 
 class pwpTasks():
     """
