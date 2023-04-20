@@ -111,6 +111,122 @@ class pwpDeviation(pwpOLS):
             raise TypeError
             print("You must input pandas DataFrame objects!!!")
 
+class pwpEvaluate():
+    """
+    This class will have the model evaluation module comprising:
+    1.  r-squared method for checking accuracy
+    2.  Root Mean Square Error (RMSE) method
+    3.  Mean Square Error (MSE) method
+    4.  Mean Absolute Error (MAE) method
+    5.  logcosh loss method.
+    """
+
+    def r_sqr(self, df1, df2):
+        
+        """
+        This method will compute the r-squared of two input features/fields.
+
+        Argument(s): df1, df2
+
+        Return(s): r_2
+        """
+        # Declaring the arguments
+        self.df1 = df1
+        self.df2 = df2
+
+        # Declaring the mean of the real observations
+        mean_df1 = np.mean(self.df1)
+
+        # Computing the deviations of the each real observations and predictions
+        # from the mean of the real observations
+        df1_sum_squares = np.sum((self.df1 - mean_df1)**2)
+        df2_sum_squares = np.sum((self.df2 - mean_df1)**2)
+
+        # Finalizing the r-squared calculations
+        r_2 = round(df2_sum_squares / df1_sum_squares, 2)
+    
+        return r_2
+
+    def rmse(self, df1, df2):
+        """
+        This method will compute the r-squared of two input features/fields.
+
+        Argument(s): df1, df2
+
+        Return(s): rmse
+        """
+        # Declaring the arguments
+        self.df1 = df1
+        self.df2 = df2
+
+        # Computing the square of residuals
+        sum_residual_sqr = np.sum((self.df2 - self.df1)**2)
+
+        # Finalizing the rmse calculations
+        rmse = round(np.sqrt(sum_residual_sqr / len(self.df1)), 2)
+    
+        return rmse
+    
+    def mse(self, df1, df2):
+        """
+        This method will compute the r-squared of two input features/fields.
+
+        Argument(s): df1, df2
+
+        Return(s): mse
+        """
+        # Declaring the arguments
+        self.df1 = df1
+        self.df2 = df2
+
+        # Computing the square of residuals
+        res_sqr = np.sum((self.df2 - self.df1)**2)
+
+        # Finalizing the rmse calculations
+        mse = round(res_sqr / len(self.df1), 2)
+    
+        return mse
+    
+
+    def mae(self, df1, df2):
+        """
+        This method will compute the mean absolute error of two input features/fields.
+
+        Argument(s): df1, df2
+
+        Return(s): mae
+        """
+
+        # Declaring the arguments
+        self.df1 = df1
+        self.df2 = df2
+
+        # Computing the square of residuals
+        abs_res_sqr = np.sum(np.absolute(self.df1 - self.df2))
+
+        # Finalizing the rmse calculations
+        mae = round(abs_res_sqr / len(self.df1), 2)
+    
+        return mae
+    
+    def logcosh(self, df1, df2):
+        """
+        This method will compute the Log-Cosh Loss function.
+
+        Argument(s): df1, df2
+
+        Return(s): lgcosh
+        """
+
+        # Declaring the arguments
+        self.df1 = df1
+        self.df2 = df2
+
+        # Computing the logcosh
+        lgh = np.sum(np.log(np.cosh(np.absolute(self.df1 - self.df2))))
+        return lgh
+
+
 class pwpTasks():
     """
     This class contains the df_loader() method for loading different datasets with
