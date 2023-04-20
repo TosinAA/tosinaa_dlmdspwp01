@@ -1,6 +1,6 @@
 import unittest
 import pandas as pd
-from ols_pwp import pwpTasks, pwpDeviation, pwpOLS
+from ols_pwp import pwpTasks, pwpDeviation, pwpOLS, pwpEvaluate
 
 
 class Testolspwp(unittest.TestCase):
@@ -72,9 +72,7 @@ class Testolspwp(unittest.TestCase):
         It will require the use of the 2 class objects such as:
         1.    pwpTasks.df_loader()
         2.    pwpOLS.idealfour_builder()
-
         Argument(s): train, ideal
-
         Return: assertEqual len(idealfour.columns) = 5
         """
 
@@ -91,9 +89,7 @@ class Testolspwp(unittest.TestCase):
         """
         This method will test if the result of the calculation of the max_deviation test dataset vs idf_in_test dataset.
         It passes when it is equal to the expected list output.
-
         Argument(s): test dataset, train dataset, ideal dataset
-
         Return(s): assert max_deviation(test, idf_in_test) = expected_lst
         """
         # Declaring the expected outcome
@@ -115,6 +111,26 @@ class Testolspwp(unittest.TestCase):
         # Performing the test
         self.assertAlmostEquals(max_deviation, expected_lst)
 
+    def test_pwpEvaluate(self):
+        """
+        This test module will be used to test the evaluate module
+        comprising the other model evaluation/loss function methods
+        viz-a-viz MSE, RMSE, MAE, r-squared and LogCosh Loss.
+        """
+        pe = pwpEvaluate()
+
+        # Testing the MSE for train['y1'] and ideal['y21']
+        self.assertEqual(pe.mse(self.train.y1, self.ideal.y21), 0.09)
+
+        # Testing the RMSE for train['y1'] and ideal['y21']
+        self.assertEqual(pe.rmse(self.train.y1, self.ideal.y21), 0.29)
+
+        # Testing the MAE for train['y1'] and ideal['y21']
+        self.assertEqual(pe.mae(self.train.y1, self.ideal.y21), 0.26)
+
+        # Testing the LogCosh Loss for train['y1'] and ideal['y21']
+        self.assertEqual(round(pe.logcosh(self.train.y1, self.ideal.y21), 2), 16.86)
+    
 
 if __name__ == "__main__":
     unittest.main()
